@@ -12,7 +12,7 @@ import mods.eln.misc.Utils.fatal
 import mods.eln.misc.Utils.notifyNeighbor
 import mods.eln.misc.Utils.println
 import mods.eln.misc.UtilsClient
-import mods.eln.server.DelayedBlockRemove.Companion.add
+
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.EntityLivingBase
@@ -81,12 +81,8 @@ abstract class NodeBlockEntity : TileEntity(), ITileEntitySpawnClient, INodeEnti
                 val nodeFromCoordonate = NodeManager.instance!!.getNodeFromCoordonate(Coordinate(xCoord, yCoord, zCoord, worldObj))
                 if (nodeFromCoordonate is Node) {
                     internalNode = nodeFromCoordonate
-                } else {
-                    println("ASSERT WRONG TYPE public Node getNode " + Coordinate(xCoord, yCoord, zCoord, worldObj))
-                }
-                if (internalNode == null) {
-                    Utils.println("This is actually used?")
-                    add(Coordinate(xCoord, yCoord, zCoord, worldObj))
+                } else if (nodeFromCoordonate != null) {
+                    Utils.println("WARN: getNode found non-Node ${nodeFromCoordonate.javaClass.simpleName} at ${Coordinate(xCoord, yCoord, zCoord, worldObj)}")
                 }
             }
             return internalNode
